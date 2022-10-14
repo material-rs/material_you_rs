@@ -1,0 +1,33 @@
+[package]
+name = "material_you"
+version = "0.1.0"
+authors = ["al3x alex.vacan.bala@gmail.com"]
+edition = "2021"
+description = "A design system for wasm apps based on rust and material design 3"
+homepage = "https://material-rs.github.io"
+readme = "README.md"
+repository = "https://github.com/material-rs/material_you_rs.git"
+license = "LGPL-3.0-or-later OR MIT"
+keywords = ["material", "design", "wasm", "frontend"]
+categories = ["wasm", "web-programming", "gui"]
+
+[lib]
+crate-type = ["cdylib", "rlib"]
+
+[dependencies]
+convert_case = "0.6.0"
+css-in-rust = "0.5"
+wasm-bindgen = "0.2"
+yew = "0.19"
+
+[dependencies.strum]
+version = "0.24"
+features = ["derive"]
+
+[dependencies.web-sys]
+version = "0.3"
+features = []
+
+[dev-dependencies]
+wasm-bindgen-test = "0.3"
+
