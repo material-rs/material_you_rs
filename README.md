@@ -112,6 +112,8 @@ working on... (we have not defined the development cycle)
 
 # License
 LGPL V3 or MIT
+[![License: LGPL v3](https://img.shields.io/badge/License-LGPL_v3-blue.svg)](https://www.gnu.org/licenses/lgpl-3.0)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 <!--
 [//]: <>  definitions
