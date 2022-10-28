@@ -1,12 +1,11 @@
-mod color;
 pub mod components;
 pub mod context;
-mod css;
-//mod dictionary;
-pub mod mapper;
-pub mod roles;
+pub mod css;
+pub(crate) mod system;
 pub mod theme;
-pub mod tokens;
+
+pub use system::color;
+pub use system::shapes;
 
 pub mod prelude {
 	pub use crate::components::card::Card;
@@ -23,17 +22,6 @@ macro_rules! hashmap {
 				temp_hashmap.insert($k, $v);
 			)*
 			temp_hashmap
-		}
-	};
-}
-
-#[macro_export]
-macro_rules! display {
-	( $ident:ident ) => {
-		impl std::fmt::Display for $ident {
-			fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
-				write!(f, "{:?}", self)
-			}
 		}
 	};
 }
