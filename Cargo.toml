@@ -17,8 +17,16 @@ crate-type = ["cdylib", "rlib"]
 [dependencies]
 convert_case = "0.6.0"
 css-in-rust = "0.5"
+gloo-console = "0.2"
+log = "0.4"
 wasm-bindgen = "0.2"
 yew = "0.19"
+
+[dependencies.color_utilities]
+version = "0.1.0"
+package = "color_utilities"
+#git = "ssh://git@github.com/material-rs/material_color_utilities.git"
+path = "../color_utilities"
 
 [dependencies.strum]
 version = "0.24"
@@ -26,7 +34,9 @@ features = ["derive"]
 
 [dependencies.web-sys]
 version = "0.3"
-features = []
+features = [
+	"Window"
+]
 
 [dev-dependencies]
 wasm-bindgen-test = "0.3"

@@ -1,38 +1,55 @@
+//TODO: add specific card type styles
+use crate::system::{color::ColorRole, shapes::Family};
 use yew::prelude::*;
-use {crate::color::Color, crate::context, crate::css, crate::roles::Roles};
+
+pub mod elevated;
+pub use elevated::*;
+pub mod filled;
+pub use filled::*;
+pub mod outlined;
+pub use outlined::*;
+
+#[derive(Clone, Debug, Default, Eq, PartialEq)]
+pub enum CardKind {
+	#[default]
+	Elevated,
+	Filled,
+	Outlined,
+}
 
 //Anatomy: 1 -> Container
 #[derive(PartialEq, Properties)]
 pub struct CardProps {
 	pub children: Children,
 	#[prop_or_default]
-	pub elevated: bool,
+	pub kind: CardKind,
 	#[prop_or_default]
-	pub filled: bool,
+	pub bg_role: ColorRole,
 	#[prop_or_default]
-	pub outlined: bool,
+	pub family: Family,
+	#[prop_or_default]
+	pub styles: Vec<Classes>,
 }
 
 #[function_component(Card)]
 pub fn card(props: &CardProps) -> Html {
-	let context = use_context::<context::Context>().unwrap();
-
-	let bg = css::background("div", &Color::of(Roles::Surface, context));
-
-	let ctn = css::new_style(
-		"div",
-		r#"
-			border-radius: 12px;
-			padding-left: 16px;
-			padding-right: 16px;
-			margin: 8px;
-			text-align: start;
-			display: inline-block;
-		"#,
+	let (family, bg_role, styles) = (
+		props.family.clone(),
+		props.bg_role.clone(),
+		props.styles.clone(),
 	);
-	html! { <div class={ vec![ctn, bg]} >
-		{ for props.children.iter() }
-	</div> }
+
+	match props.kind {
+		CardKind::Elevated => html! { <ElevatedCard {family} {bg_role} {styles} >
+			{ for props.children.iter() }
+		</ElevatedCard> },
+		CardKind::Filled => html! { <FilledCard {family} {bg_role} {styles} >
+			{ for props.children.iter() }
+		</FilledCard> },
+		CardKind::Outlined => html! { <OutlinedCard {family} {bg_role} {styles} >
+			{ for props.children.iter() }
+		</OutlinedCard> },
+	}
 }
 
 //Anatomy: 2 -> Headline
