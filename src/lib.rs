@@ -5,6 +5,7 @@ pub(crate) mod system;
 pub mod theme;
 
 pub use system::color;
+pub use system::icons;
 pub use system::shapes;
 
 pub mod prelude {

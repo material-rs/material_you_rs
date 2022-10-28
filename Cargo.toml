@@ -21,6 +21,7 @@ gloo-console = "0.2"
 log = "0.4"
 wasm-bindgen = "0.2"
 yew = "0.19"
+gloo-net = "0.2.4"
 
 [dependencies.color_utilities]
 version = "0.1.0"
@@ -35,7 +36,11 @@ features = ["derive"]
 [dependencies.web-sys]
 version = "0.3"
 features = [
-	"Window"
+	"Document",
+	"HtmlHeadElement",
+	"HtmlLinkElement",
+	"Node",
+	"Window",
 ]
 
 [dev-dependencies]

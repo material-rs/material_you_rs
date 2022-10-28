@@ -21,6 +21,16 @@ pub fn background(class_name: &str, color: ARGB) -> Classes {
 	new_style(class_name, &style)
 }
 
+pub fn color(class_name: &str, color: ARGB) -> Classes {
+	let [a, r, g, b] = color;
+
+	let a = a as f64 / 255.0;
+
+	let style = format!(r#"color: rgba({},{},{},{});"#, r, g, b, a);
+
+	new_style(class_name, &style)
+}
+
 pub fn border(class_name: &str, kind: &Family, size: [f32; 4]) -> Classes {
 	//TODO: make styles for cutted and circular borders
 	let style = match kind {
