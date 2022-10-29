@@ -3,6 +3,11 @@ use wasm_bindgen::JsCast;
 use web_sys::{HtmlLinkElement, Node};
 use yew::prelude::{function_component, html, use_state, Children, ContextProvider, Properties};
 
+/// don't use this!, isntead use ['MaterialProvider']
+/// which provide full context, for theming, icons, and typography
+///
+/// use it only if you are not going to use typographies and color.
+///
 /// ```rust
 /// use material_you::icons::{IconsProvider, IconOpts, IconKind, Icon};
 /// use yew::{function_component, html};
@@ -27,6 +32,11 @@ pub struct Props {
 	pub default_opts: IconOpts,
 }
 
+/// don't use this!, isntead use ['MaterialProvider']
+/// which provide full context, for theming, icons, and typography
+///
+/// use it only if you are not going to use typographies and color.
+///
 /// ```rust
 /// use material_you::icons::{IconsProvider, Icon};
 /// use yew::{function_component, html};

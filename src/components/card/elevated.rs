@@ -1,6 +1,6 @@
 use crate::{
-	color::{Color, ColorRole},
-	context, css,
+	color::{Color, ColorContext, ColorRole},
+	css,
 	shapes::Family,
 	system::shapes::ShapeMedium,
 };
@@ -19,7 +19,7 @@ pub struct Props {
 
 #[function_component(ElevatedCard)]
 pub fn elevated_card(props: &Props) -> Html {
-	let context = use_context::<context::Context>().unwrap();
+	let context = use_context::<ColorContext>().unwrap();
 
 	let (family, bg_role, styles) = (
 		props.family.clone(),
