@@ -54,7 +54,7 @@ impl Default for IconOpts {
 			fill: 0.,
 			weight: 400,
 			grade: 0,
-			optical_size: 48,
+			optical_size: 24,
 		}
 	}
 }
@@ -135,15 +135,24 @@ pub fn icon(props: &Props) -> Html {
 		} = opts;
 
 		let style = format!(
-			"font-variation-settings: 'FILL' {}, 'wght' {}, 'GRAD' {}, 'opsz' {};",
-			fill, weight, grade, optical_size
+			r#".{} {{
+                font-variation-settings:
+                    'FILL' {},
+                    'wght' {},
+                    'GRAD' {},
+                    'opsz' {};
+
+                font-size: {}px;
+            }}
+            "#,
+			&icon_family, fill, weight, grade, optical_size, optical_size
 		);
 
-		css::new_style("span", &style)
+		css::new_style("div", &style)
 	};
 
-	html! { <div>
-		<span class={classes!(icon_family, icon_style, color)} >{&props.icon}</span>
+	html! { <div class={icon_style}>
+		<span class={classes!(icon_family, color)} >{&props.icon}</span>
 	</div>}
 }
 
@@ -160,6 +169,7 @@ fn color(inactive: bool, context: &context::Context, color: &Option<ColorRole>) 
 			} else {
 				[0, 255, 255, 255]
 			};
+
 			[a, r, g, b]
 		}
 		Theme::Light => {
@@ -170,6 +180,7 @@ fn color(inactive: bool, context: &context::Context, color: &Option<ColorRole>) 
 			} else {
 				[0, 0, 0, 0]
 			};
+
 			[a, r, g, b]
 		}
 	};

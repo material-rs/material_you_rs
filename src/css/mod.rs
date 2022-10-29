@@ -1,7 +1,7 @@
 //TODO: move definiton to other site and break circular dependency
-use crate::system::shapes::Family;
+use crate::system::{shapes::Family, typography::Typescale};
 use color_utilities::utils::color::ARGB;
-use yew::html::Classes;
+use yew::{classes, html::Classes};
 
 pub fn new_style(class_name: &str, css: &str) -> Classes {
 	yew::html::Classes::from(
@@ -43,4 +43,34 @@ pub fn border(class_name: &str, kind: &Family, size: [f32; 4]) -> Classes {
 	};
 
 	new_style(class_name, &style)
+}
+
+pub fn fonts_style(class_name: &str, typescale: &Typescale) -> Classes {
+	//TODO: make styles
+	let style = format!(
+		r#"
+blockquote, dd, div, dl, dt, figcaption, figure, hr, li, menu, ol, p, pre, ul, a, abbr, b, bdi, bdo, br, cite,code, data, dfn, em, i, kbd, mark,q, rp, rt, ruby, s, samp, small, span, strong, sub, sup, time, u, var, wbr: {{
+    font-family: {};
+    font-size: {}px;
+}}
+
+    "#,
+		typescale.font(),
+		typescale.size()
+	);
+
+	let s = new_style(
+		class_name,
+		&format!(
+			r#"
+            font-family: {};
+            font-size: {}px;
+    "#,
+			typescale.font(),
+			typescale.size()
+		),
+	);
+
+	//new_style(class_name, &style)
+	classes!(style, s)
 }
