@@ -85,13 +85,15 @@ cargo add material_you
 
 ```rust
 use yew::prelude::{function_component, html};
-use material_you::prelude::ThemeProvider;
+use material_you::provider::MaterialProvider;
 
 #[function_component(MyApp)]
 fn my_app() -> Html {
-	html! { <ThemeProvider> //provides access to material color system and theming to whole app
+	// MaterialProvider provides context info for material design
+	// for theming, icons, typography
+	html! { <MaterialProvider>
 		<p>{"My App"}</p>
-	</ThemeProvider> }
+	</MaterialProvider> }
 }
 ```
 
@@ -107,7 +109,7 @@ use material_you::{
 		FilledCard, 
 	},
 	css,
-	theme::ThemeProvider,
+	provider::MaterialProvider
 };
 
 #[function_component(MyComponent)]
@@ -131,9 +133,9 @@ fn my_component() -> Html {
 
 #[function_component(MyApp)]
 fn my_app() -> Html {
-	html! { <ThemeProvider>
+	html! { <MaterialProvider>
 		<MyComponent />
-	</ThemeProvider> }
+	</MaterialProvider> }
 }
 ```
 
@@ -145,61 +147,3 @@ LGPL V3 or MIT
 [![License: LGPL v3](https://img.shields.io/badge/License-LGPL_v3-blue.svg)](https://www.gnu.org/licenses/lgpl-3.0)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-<!--
-[//]: <>  definitions
-[//]: <>  
-[//]: <>  Key: Accent | Neutral | Error
-[//]: <>  		< Accent[ primary key color | secondary key color | tertiary key color ] >
-[//]: <>  	< Neutral[ neutral key color | neutral variant key color ] >
-[//]: <>  palette: <Key, <ton1, ton2, ...., ton13> >
-[//]: <>  
-[//]: <>  tone -> assigned to role
-[//]: <>  
-[//]: <>  tonal palette ->  [color,0..100] color with % of ligth (palette have 13 tones)
-[//]: <>  e.g. primary40 -> primary key color with 40% of ligth
-[//]: <>  
-[//]: <>  color scheme -> a set/group of tones assigned to specific roles that get mapped to components
-[//]: <>  
-[//]: <>  scheme roles ->
-[//]: <>  accent keys: pairing, emphasis, visual expresion
-[//]: <>  neutral keys: surfaces and backgrouns... and high emphasis text and icons
-[//]: <>  
-[//]: <>  -----------------------------------------------------------------------------
-[//]: <>   Pseudocode of usage (design)
-[//]: <>  {
-[//]: <>  
-[//]: <>  	color(md.sys.color.surface) = Color::of(Role::Surface);
-[//]: <>  	css = \"
-[//]: <>  		background-color: md.sys.color.surface //(color:surface)
-[//]: <>  	\";
-[//]: <>  	<template css>...</template>
-[//]: <>  }
-[//]: <>  ----------------------------------------------------------------------------
-[//]: <>  
-[//]: <>  
-[//]: <>  
-[//]: <>  NOTE: all this is based on one color scheme.. where is passed?
-[//]: <>  let color = Color::of(Role::Primary);
-[//]: <>  fn Color::of(role: Role) -> Hex {
-[//]: <>  	Token::of(Role).hex()
-[//]: <>  }
-[//]: <>  
-[//]: <>  fn Token::of(role: Role) -> Token {
-[//]: <>  	// encapsulates current baseline theme
-[//]: <>  	if dark return dark token
-[//]: <>  	if light return ligth token
-[//]: <>  }
-[//]: <>  fn hex(self: Token) -> Hex {
-[//]: <>  }
-[//]: <>  
-[//]: <>  let color = Color::of(Role::Surface);
-[//]: <>  
-[//]: <>  
-[//]: <>  for surfaces level 1..5
-[//]: <>  let color = Color::of(Role::Surface).level(3);
-[//]: <>  
-[//]: <>  fn Hex::level(self: Hex, level: Level) -> Hex  {
-[//]: <>  	//add opacity to current color
-[//]: <>  }
-[//]: <>  
--->
