@@ -7,6 +7,7 @@ pub mod theme;
 pub use system::color;
 pub use system::icons;
 pub use system::shapes;
+pub use system::typography;
 
 pub mod prelude {
 	pub use crate::components::card::Card;
