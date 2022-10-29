@@ -1,8 +1,7 @@
 pub mod components;
-pub mod context;
 pub mod css;
+pub mod provider;
 pub(crate) mod system;
-pub mod theme;
 
 pub use system::color;
 pub use system::icons;
@@ -12,7 +11,7 @@ pub use system::typography;
 pub mod prelude {
 	pub use crate::components::card::Card;
 	pub use crate::components::*;
-	pub use crate::theme::ThemeProvider;
+	pub use crate::provider;
 }
 
 #[macro_export]

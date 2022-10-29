@@ -1,10 +1,12 @@
-use crate::context::Context;
 use color_utilities::utils::color::ARGB;
+
+pub mod provider;
+pub use provider::*;
 
 pub struct Color;
 
 impl Color {
-	pub fn of(role: &ColorRole, context: &Context) -> ARGB {
+	pub fn of(role: &ColorRole, context: &ColorContext) -> ARGB {
 		match role {
 			ColorRole::Primary => context.scheme().primary(),
 			ColorRole::PrimaryContainer => context.scheme().primary_container(),

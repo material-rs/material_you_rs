@@ -10,7 +10,7 @@ pub enum TypescaleRoles {
 	Title,
 }
 
-#[derive(Clone, Default, Hash, Eq, PartialEq)]
+#[derive(Clone, Debug, Default, Hash, Eq, PartialEq)]
 pub enum TypescaleModifier {
 	Small,
 	#[default]
@@ -18,7 +18,7 @@ pub enum TypescaleModifier {
 	Large,
 }
 
-#[derive(Clone, PartialEq)]
+#[derive(Clone, Debug, PartialEq)]
 pub struct CoreTypescale {
 	display: HashMap<TypescaleModifier, Typescale>,
 	body: HashMap<TypescaleModifier, Typescale>,

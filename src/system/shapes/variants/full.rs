@@ -1,6 +1,8 @@
-use crate::shapes::Family;
-use crate::system::color::{Color, ColorRole};
-use crate::{context, css::*};
+use crate::{
+	css::*,
+	shapes::Family,
+	system::color::{Color, ColorContext, ColorRole},
+};
 use yew::prelude::*;
 
 #[derive(Debug, PartialEq, Properties)]
@@ -16,7 +18,7 @@ pub struct Props {
 
 #[function_component(ShapeFull)]
 pub fn shape_full(props: &Props) -> Html {
-	let context = use_context::<context::Context>().unwrap();
+	let context = use_context::<ColorContext>().unwrap();
 
 	let border = border("div", &props.family, [100.0; 4]);
 

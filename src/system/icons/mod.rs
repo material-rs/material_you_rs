@@ -1,7 +1,5 @@
 use crate::{
-	color::{Color, ColorRole},
-	context,
-	context::Theme,
+	color::{Color, ColorContext, ColorRole, Theme},
 	css,
 };
 use color_utilities::utils::color::ARGB;
@@ -106,7 +104,7 @@ pub struct Props {
 /// ```
 #[function_component(Icon)]
 pub fn icon(props: &Props) -> Html {
-	let context = use_context::<context::Context>().unwrap();
+	let context = use_context::<ColorContext>().unwrap();
 
 	let family = if let Some(family) = props.family.clone() {
 		family
@@ -157,7 +155,7 @@ pub fn icon(props: &Props) -> Html {
 }
 
 // returns ['ARGB'] for icon
-fn color(inactive: bool, context: &context::Context, color: &Option<ColorRole>) -> ARGB {
+fn color(inactive: bool, context: &ColorContext, color: &Option<ColorRole>) -> ARGB {
 	let theme = context.theme();
 
 	let [a, r, g, b] = match theme {
