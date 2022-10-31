@@ -1,5 +1,8 @@
 //TODO: add specific card type styles
-use crate::system::{color::ColorRole, shapes::Family};
+use crate::{
+	css,
+	system::{color::ColorRole, elevation::Elevation, shapes::Family},
+};
 use yew::prelude::*;
 
 pub mod elevated;
@@ -8,6 +11,20 @@ pub mod filled;
 pub use filled::*;
 pub mod outlined;
 pub use outlined::*;
+
+pub(self) fn card_style() -> Classes {
+	css::new_style(
+		"div",
+		r#"
+			text-align: start;
+			display: inline-block;
+			padding-left: 16px;
+			padding-right: 16px;
+			margin-left: 8px;
+			margin-right: 8px;
+		"#,
+	)
+}
 
 #[derive(Clone, Debug, Default, Eq, PartialEq)]
 pub enum CardKind {
@@ -24,29 +41,32 @@ pub struct CardProps {
 	#[prop_or_default]
 	pub kind: CardKind,
 	#[prop_or_default]
-	pub bg_role: ColorRole,
-	#[prop_or_default]
 	pub family: Family,
+	#[prop_or_default]
+	pub background: ColorRole,
+	#[prop_or(Elevation::tone(1))]
+	pub elevation: Elevation,
 	#[prop_or_default]
 	pub styles: Vec<Classes>,
 }
 
 #[function_component(Card)]
 pub fn card(props: &CardProps) -> Html {
-	let (family, bg_role, styles) = (
+	let (family, background, elevation, styles) = (
 		props.family.clone(),
-		props.bg_role.clone(),
+		props.background.clone(),
+		props.elevation.clone(),
 		props.styles.clone(),
 	);
 
 	match props.kind {
-		CardKind::Elevated => html! { <ElevatedCard {family} {bg_role} {styles} >
+		CardKind::Elevated => html! { <ElevatedCard {family} {background} {elevation} {styles} >
 			{ for props.children.iter() }
 		</ElevatedCard> },
-		CardKind::Filled => html! { <FilledCard {family} {bg_role} {styles} >
+		CardKind::Filled => html! { <FilledCard {family} {background} {elevation} {styles} >
 			{ for props.children.iter() }
 		</FilledCard> },
-		CardKind::Outlined => html! { <OutlinedCard {family} {bg_role} {styles} >
+		CardKind::Outlined => html! { <OutlinedCard {family} {background} {elevation} {styles} >
 			{ for props.children.iter() }
 		</OutlinedCard> },
 	}

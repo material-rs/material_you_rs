@@ -136,4 +136,12 @@ impl ColorContext {
 			Theme::Dark => Scheme::dark(self.color),
 		}
 	}
+
+	pub fn is_light_theme(&self) -> bool {
+		matches!(self.theme, Theme::Light)
+	}
+
+	pub fn palette(&mut self) -> &mut CorePalette {
+		&mut self.palette
+	}
 }

@@ -1,4 +1,4 @@
-use crate::system::color::ColorRole;
+use crate::{elevation::Elevation, system::color::ColorRole};
 use yew::prelude::*;
 
 mod variants;
@@ -11,10 +11,11 @@ pub struct Props {
 	pub scale: ShapeScale,
 	#[prop_or_default]
 	pub family: Family,
+	#[prop_or(ColorRole::Surface)]
+	pub background: ColorRole,
+	#[prop_or(Elevation::tone(0))]
+	pub elevation: Elevation,
 	#[prop_or_default]
-	pub bg_role: ColorRole,
-	#[prop_or_default]
-	// custom styles passed from top level components
 	pub styles: Vec<Classes>,
 }
 
@@ -31,7 +32,7 @@ pub struct Props {
 ///
 ///     //let scale = ShapeScale::Medium;
 ///     //let family = Family::Rounded;
-///     //let bg_role = ColorRole::Surface;
+///     //let background = ColorRole::Surface;
 ///
 ///     //let custom_css = css::new_style("div", r#"margin: 2px;"#);
 ///     //let styles = vec![custom_css];
@@ -41,7 +42,7 @@ pub struct Props {
 ///         html! { <Shape
 ///             //scale={scale}
 ///             //family={family}
-///             //bg_role={bg_role}
+///             //background={background}
 ///             //styles={styles}
 ///         >
 ///             <span>{"my shape content"}</span>
@@ -50,38 +51,43 @@ pub struct Props {
 /// ```
 #[function_component(Shape)]
 pub fn shape(props: &Props) -> Html {
-	let (family, bg_role, styles) = (
+	let (family, background, elevation, styles) = (
 		props.family.clone(),
-		props.bg_role.clone(),
+		props.background.clone(),
+		props.elevation.clone(),
 		props.styles.clone(),
 	);
 
 	match props.scale {
-		ShapeScale::None => html! { <ShapeNone {bg_role} {family} {styles}>
+		ShapeScale::None => html! { <ShapeNone {background} {family} {elevation} {styles}>
 			{ for props.children.iter() }
 		</ShapeNone> },
 
-		ShapeScale::ExtraSmall => html! { <ShapeExtraSmall {bg_role} {family} {styles}>
-			{ for props.children.iter() }
-		</ShapeExtraSmall> },
+		ShapeScale::ExtraSmall => {
+			html! { <ShapeExtraSmall {background} {family} {elevation} {styles}>
+				{ for props.children.iter() }
+			</ShapeExtraSmall> }
+		}
 
-		ShapeScale::Small => html! { <ShapeSmall {bg_role} {family} {styles}>
+		ShapeScale::Small => html! { <ShapeSmall {background} {family} {elevation} {styles}>
 			{ for props.children.iter() }
 		</ShapeSmall> },
 
-		ShapeScale::Medium => html! { <ShapeMedium {bg_role} {family} {styles}>
+		ShapeScale::Medium => html! { <ShapeMedium {background} {family} {elevation} {styles}>
 			{ for props.children.iter() }
 		</ShapeMedium> },
 
-		ShapeScale::Large => html! { <ShapeLarge {bg_role} {family} {styles}>
+		ShapeScale::Large => html! { <ShapeLarge {background} {family} {elevation} {styles}>
 			{ for props.children.iter() }
 		</ShapeLarge> },
 
-		ShapeScale::ExtraLarge => html! { <ShapeExtraLarge {bg_role} {family} {styles}>
-			{ for props.children.iter() }
-		</ShapeExtraLarge> },
+		ShapeScale::ExtraLarge => {
+			html! { <ShapeExtraLarge {background} {family} {elevation} {styles}>
+				{ for props.children.iter() }
+			</ShapeExtraLarge> }
+		}
 
-		ShapeScale::Full => html! { <ShapeFull {bg_role} {family} {styles}>
+		ShapeScale::Full => html! { <ShapeFull {background} {family} {elevation} {styles}>
 			{ for props.children.iter() }
 		</ShapeFull> },
 	}

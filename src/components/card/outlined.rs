@@ -1,4 +1,12 @@
-use crate::{color::ColorRole, css, shapes::Family, system::shapes::ShapeMedium};
+use crate::{
+	color::{Color, ColorContext, ColorRole},
+	css,
+	shapes::Family,
+	system::{
+		elevation::{Elevation, ElevationKind},
+		shapes::ShapeMedium,
+	},
+};
 use yew::prelude::*;
 
 #[derive(Debug, PartialEq, Properties)]
@@ -7,34 +15,39 @@ pub struct Props {
 	#[prop_or_default]
 	pub family: Family,
 	#[prop_or_default]
-	pub bg_role: ColorRole,
+	pub background: ColorRole,
+	#[prop_or(Elevation::tone(2))]
+	pub elevation: Elevation,
 	#[prop_or_default]
 	pub styles: Vec<Classes>,
 }
 
 #[function_component(OutlinedCard)]
 pub fn outlined_card(props: &Props) -> Html {
-	let (family, bg_role, styles) = (
+	let mut context = use_context::<ColorContext>().unwrap();
+
+	let (family, background, elevation, styles) = (
 		props.family.clone(),
-		props.bg_role.clone(),
+		props.background.clone(),
+		props.elevation.clone(),
 		props.styles.clone(),
 	);
 
-	let style = css::new_style(
-		"div",
-		r#"
-			text-align: start;
-			display: inline-block;
-			padding-left: 16px;
-			padding-right: 16px;
-			margin-left: 8px;
-			margin-right: 8px;
-		"#,
-	);
+	let style = super::card_style();
 
-	let styles = [styles, vec![style]].concat();
+	let bg = css::background("div", Color::of(&background, &context));
 
-	html! { <ShapeMedium {family} {bg_role} {styles} >
+	let elevation_style = match elevation.kind() {
+		ElevationKind::Shadow => css::elevation::shadow("div", &mut context, elevation.level()),
+		ElevationKind::Scrim => css::elevation::scrim("div", &context, elevation.level()),
+		ElevationKind::Tone => {
+			css::elevation::tone("div", &mut context, &background, elevation.level())
+		}
+	};
+
+	let styles = [styles, vec![style, bg, elevation_style]].concat();
+
+	html! { <ShapeMedium {family} {background} {elevation} {styles} >
 		{ for props.children.iter() }
 	</ShapeMedium>}
 }
