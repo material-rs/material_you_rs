@@ -3,6 +3,8 @@ use crate::system::{shapes::Family, typography::Typescale};
 use color_utilities::utils::color::ARGB;
 use yew::{classes, html::Classes};
 
+pub mod elevation;
+
 pub fn new_style(class_name: &str, css: &str) -> Classes {
 	yew::html::Classes::from(
 		css_in_rust::Style::create(class_name, css)
@@ -12,21 +14,29 @@ pub fn new_style(class_name: &str, css: &str) -> Classes {
 }
 
 pub fn background(class_name: &str, color: ARGB) -> Classes {
-	let [a, r, g, b] = color;
+	let a = color[0] as f64 / 255.0;
 
-	let a = a as f64 / 255.0;
+	background_with_alpha(class_name, color, a)
+}
 
-	let style = format!(r#"background: rgba({},{},{},{});"#, r, g, b, a);
+pub fn background_with_alpha(class_name: &str, color: ARGB, alpha: f64) -> Classes {
+	let [_, r, g, b] = color;
+
+	let style = format!(r#"background: rgba({},{},{},{});"#, r, g, b, alpha);
 
 	new_style(class_name, &style)
 }
 
 pub fn color(class_name: &str, color: ARGB) -> Classes {
-	let [a, r, g, b] = color;
+	let a = color[0] as f64 / 255.0;
 
-	let a = a as f64 / 255.0;
+	color_with_alpha(class_name, color, a)
+}
 
-	let style = format!(r#"color: rgba({},{},{},{});"#, r, g, b, a);
+pub fn color_with_alpha(class_name: &str, color: ARGB, alpha: f64) -> Classes {
+	let [_, r, g, b] = color;
+
+	let style = format!(r#"color: rgba({},{},{},{});"#, r, g, b, alpha);
 
 	new_style(class_name, &style)
 }
@@ -49,12 +59,10 @@ pub fn fonts_style(class_name: &str, typescale: &Typescale) -> Classes {
 	//TODO: make styles
 	let style = format!(
 		r#"
-blockquote, dd, div, dl, dt, figcaption, figure, hr, li, menu, ol, p, pre, ul, a, abbr, b, bdi, bdo, br, cite,code, data, dfn, em, i, kbd, mark,q, rp, rt, ruby, s, samp, small, span, strong, sub, sup, time, u, var, wbr: {{
-    font-family: {};
-    font-size: {}px;
-}}
-
-    "#,
+			blockquote, dd, div, dl, dt, figcaption, figure, hr, li, menu, ol, p, pre, ul, a, abbr, b, bdi, bdo, br, cite,code, data, dfn, em, i, kbd, mark,q, rp, rt, ruby, s, samp, small, span, strong, sub, sup, time, u, var, wbr: {{
+				font-family: {};
+				font-size: {}px;
+		}}"#,
 		typescale.font(),
 		typescale.size()
 	);
@@ -63,9 +71,9 @@ blockquote, dd, div, dl, dt, figcaption, figure, hr, li, menu, ol, p, pre, ul, a
 		class_name,
 		&format!(
 			r#"
-            font-family: {};
-            font-size: {}px;
-    "#,
+				font-family: {};
+				font-size: {}px;
+			"#,
 			typescale.font(),
 			typescale.size()
 		),

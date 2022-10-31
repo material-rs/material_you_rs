@@ -1,7 +1,10 @@
 use crate::{
-	css::*,
+	css,
 	shapes::Family,
-	system::color::{Color, ColorContext, ColorRole},
+	system::{
+		color::{Color, ColorContext, ColorRole},
+		elevation::{Elevation, ElevationKind},
+	},
 };
 use yew::prelude::*;
 
@@ -10,22 +13,39 @@ pub struct Props {
 	pub children: Children,
 	#[prop_or_default]
 	pub family: Family,
-	#[prop_or_default]
-	pub bg_role: ColorRole,
+	#[prop_or(ColorRole::Surface)]
+	pub background: ColorRole,
+	#[prop_or(Elevation::tone(0))]
+	pub elevation: Elevation,
 	#[prop_or_default]
 	pub styles: Vec<Classes>,
 }
 
 #[function_component(ShapeLarge)]
 pub fn shape_large(props: &Props) -> Html {
-	let context = use_context::<ColorContext>().unwrap();
+	let mut context = use_context::<ColorContext>().unwrap();
 
-	let border = border("div", &props.family, [16.0; 4]);
+	let (family, background, elevation, styles) = (
+		props.family.clone(),
+		props.background.clone(),
+		props.elevation.clone(),
+		props.styles.clone(),
+	);
 
-	let bg = background("div", Color::of(&props.bg_role, &context));
+	let border = css::border("div", &family, [16.0; 4]);
 
-	let mut class: Vec<_> = vec![bg, border];
-	class.extend(props.styles.clone());
+	let bg = css::background("div", Color::of(&background, &context));
+
+	let elevation = match elevation.kind() {
+		ElevationKind::Shadow => css::elevation::shadow("div", &mut context, elevation.level()),
+		ElevationKind::Tone => {
+			css::elevation::tone("div", &mut context, &background, elevation.level())
+		}
+		ElevationKind::Scrim => css::elevation::scrim("div", &context, elevation.level()),
+	};
+
+	let mut class: Vec<_> = vec![bg, border, elevation];
+	class.extend(styles);
 
 	html! {<div {class} >
 		{ for props.children.iter() }

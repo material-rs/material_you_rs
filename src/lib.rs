@@ -4,6 +4,7 @@ pub mod provider;
 pub(crate) mod system;
 
 pub use system::color;
+pub use system::elevation;
 pub use system::icons;
 pub use system::shapes;
 pub use system::typography;

@@ -2,7 +2,10 @@ use crate::{
 	color::{Color, ColorContext, ColorRole},
 	css,
 	shapes::Family,
-	system::shapes::ShapeMedium,
+	system::{
+		elevation::{Elevation, ElevationKind},
+		shapes::ShapeMedium,
+	},
 };
 use yew::prelude::*;
 
@@ -11,53 +14,40 @@ pub struct Props {
 	pub children: Children,
 	#[prop_or_default]
 	pub family: Family,
-	#[prop_or_default]
-	pub bg_role: ColorRole,
+	#[prop_or(ColorRole::Surface)]
+	pub background: ColorRole,
+	#[prop_or(Elevation::shadow(1))]
+	pub elevation: Elevation,
 	#[prop_or_default]
 	pub styles: Vec<Classes>,
 }
 
 #[function_component(ElevatedCard)]
 pub fn elevated_card(props: &Props) -> Html {
-	let context = use_context::<ColorContext>().unwrap();
+	let mut context = use_context::<ColorContext>().unwrap();
 
-	let (family, bg_role, styles) = (
+	let (family, background, elevation, styles) = (
 		props.family.clone(),
-		props.bg_role.clone(),
+		props.background.clone(),
+		props.elevation.clone(),
 		props.styles.clone(),
 	);
 
-	let style = css::new_style(
-		"div",
-		r#"
-			text-align: start;
-			display: inline-block;
-			padding-left: 16px;
-			padding-right: 16px;
-			margin-left: 8px;
-			margin-right: 8px;
-		"#,
-	);
+	let style = super::card_style();
 
-	//let bg_child = css::background("div", ColorRole::Primary);
+	let bg = css::background("div", Color::of(&background, &context));
 
-	let [a, r, g, b] = Color::of(&ColorRole::Shadow, &context);
+	let elevation_style = match elevation.kind() {
+		ElevationKind::Shadow => css::elevation::shadow("div", &mut context, elevation.level()),
+		ElevationKind::Scrim => css::elevation::scrim("div", &context, elevation.level()),
+		ElevationKind::Tone => {
+			css::elevation::tone("div", &mut context, &background, elevation.level())
+		}
+	};
 
-	let a = a as f32 / 255.0;
+	let styles = [styles, vec![style, bg, elevation_style]].concat();
 
-	let shadow = css::new_style(
-		"div",
-		&format!(
-			r#"
-        box-shadow: 1px 1px rgba({},{},{},{});
-    "#,
-			r, g, b, a
-		),
-	);
-
-	let styles = [styles, vec![style, shadow]].concat();
-
-	html! { <ShapeMedium {family} {bg_role} {styles} >
+	html! { <ShapeMedium {family} {background} {elevation} {styles} >
 		{ for props.children.iter() }
 	</ShapeMedium>}
 }
